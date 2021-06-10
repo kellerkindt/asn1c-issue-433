@@ -69,3 +69,10 @@ inline static int helper_check_cpm(CPM_t *message, FILE *stream) {
 
     return result;
 }
+
+
+inline static void helper_free_cpm(CPM_t **message) {
+    asn_TYPE_descriptor_t *descriptor = &asn_DEF_CPM;
+    descriptor->op->free_struct(descriptor, (void*)*message, 0);
+    *message = NULL;
+}

@@ -37,5 +37,5 @@ void main(void) {
     BAIL("checking constraints", helper_check_cpm(cpm, stderr));
     BAIL("sending cpm", helper_send_cpm(cpm));
 
-    // no free for you today
+    helper_free_cpm(&cpm);
 }
