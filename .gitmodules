@@ -1,0 +1,9 @@
+[submodule "riebl_asn1c"]
+	path = riebl_asn1c
+	url = https://github.com/riebl/asn1c
+[submodule "mouse07410_asn1c"]
+	path = mouse07410_asn1c
+	url = https://github.com/mouse07410/asn1c.git
+[submodule "asn1c"]
+	path = asn1c
+	url = https://github.com/vlm/asn1c
