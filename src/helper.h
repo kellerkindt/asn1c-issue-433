@@ -47,18 +47,6 @@ inline static int helper_send_cpm(CPM_t *message) {
         printf("\n");
         fflush(stdout);
 
-        void *decoded_message = calloc(1, 8000);
-        asn_dec_rval_t decode_result = uper_decode(0, descriptor, &decoded_message, &buffer, size, 0, 0);
-        printf("  decode result: %d", decode_result.code);
-        fflush(stdout);
-
-        if (decode_result.code != RC_OK) {
-            return decode_result.code;
-            free(decoded_message);
-        }
-
-        asn_fprint(stdout, descriptor, decoded_message);
-        free(decoded_message);
         return 0;
     } else {
         return -1;
