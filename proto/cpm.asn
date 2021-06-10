@@ -1,0 +1,103 @@
+Schema DEFINITIONS AUTOMATIC TAGS ::= 
+BEGIN
+
+CPM ::= SEQUENCE {
+    header ItsPduHeader,
+    cpm    CollectivePerceptionMessage
+}
+ItsPduHeader ::= SEQUENCE {
+    protocolVersion INTEGER (0..255),
+    messageID INTEGER (0..255),
+    stationID INTEGER (0..4294967295)
+}
+
+CollectivePerceptionMessage ::= SEQUENCE {
+    generationDeltaTime         INTEGER (0..65535),
+    cpmParameters               CpmParameters
+}
+
+
+
+
+CpmParameters ::= SEQUENCE {
+    managementContainer         CpmManagementContainer,
+    stationDataContainer        INTEGER  OPTIONAL,
+    sensorInformationContainer  INTEGER  OPTIONAL,
+    perceivedObjectContainer    INTEGER  OPTIONAL,
+    freeSpaceAddendumContainer  FreeSpaceAddendumContainer OPTIONAL,
+    numberOfPerceivedObjects    INTEGER (0..255),
+    ...,
+    timeReference               INTEGER
+}
+
+FreeSpaceAddendumContainer ::= SEQUENCE SIZE(1..128, ...) OF FreeSpaceAddendum
+
+FreeSpaceAddendum ::= SEQUENCE {
+    freeSpaceConfidence    INTEGER (0..101),
+    freeSpaceArea          FreeSpaceArea,
+    sensorIDList           INTEGER     OPTIONAL,
+    shadowingApplies       BOOLEAN DEFAULT TRUE,
+    ...
+}
+
+FreeSpaceArea ::= CHOICE {
+    freeSpacePolygon     INTEGER,
+    freeSpaceCircular    AreaCircular,
+    freeSpaceEllipse     INTEGER,
+    freeSpaceRectangle   INTEGER,
+    ...
+}
+
+
+AreaCircular ::= SEQUENCE {
+    nodeCenterPoint      INTEGER OPTIONAL,
+    radius               INTEGER (0..10000)
+}
+
+CpmManagementContainer ::= SEQUENCE {
+    stationType                         INTEGER (0..255),
+    perceivedObjectContainerSegmentInfo INTEGER OPTIONAL,
+    referencePosition                   ReferencePosition,
+    ...
+}
+
+
+ReferencePosition ::= SEQUENCE {
+    latitude                    INTEGER (-900000000..900000001),
+    longitude                   INTEGER (-1800000000..1800000001),
+    positionConfidenceEllipse   PosConfidenceEllipse,
+    altitude                    Altitude
+}
+
+Altitude ::= SEQUENCE {
+    altitudeValue       INTEGER (-100000..800001),
+    altitudeConfidence  AltitudeConfidence
+}
+
+AltitudeConfidence ::= ENUMERATED {
+    alt-000-01(0),
+    alt-000-02(1),
+    alt-000-05(2),
+    alt-000-10(3),
+    alt-000-20(4),
+    alt-000-50(5),
+    alt-001-00(6),
+    alt-002-00(7),
+    alt-005-00(8),
+    alt-010-00(9),
+    alt-020-00(10),
+    alt-050-00(11),
+    alt-100-00(12),
+    alt-200-00(13),
+    outOfRange(14),
+    unavailable(15)
+}
+
+
+PosConfidenceEllipse ::= SEQUENCE {
+    semiMajorConfidence     INTEGER (0..4095),
+    semiMinorConfidence     INTEGER (0..4095),
+    semiMajorOrientation    INTEGER (0..3601)
+}
+                                  
+END
